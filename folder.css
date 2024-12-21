@@ -1,0 +1,34 @@
+.container-folder {
+  background-color: gray;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  
+}
+
+.folder-button {
+  color: white;
+  background-color: #5a5e7e;
+
+  display: flex;
+
+  border-radius: 10px;
+
+  box-shadow: 0 0 10px rgba(0, 0, 0, .3);
+
+  padding: 15px;
+  margin: 10px 20px;
+}
+
+.folder-svg {
+  margin: 0 10px;
+}
+
+.container-text-suggested {
+  color: white;
+
+  font-size: 20px;
+
+  padding: 10px 20px;
+
+  margin: 10px 0;
+}
