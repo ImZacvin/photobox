@@ -1,0 +1,80 @@
+.container-image {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);  /* 2 image boxes per row */
+  gap: 20px;  /* Space between the image boxes */
+  row-gap: 0px;
+  padding: 0 20px;
+}
+
+.image-box {
+  background-color: #5a5e7e;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 20px;
+  /* Ensure the box size is consistent */
+  max-width: 100%;
+}
+
+.image {
+  background-color: lightgray;
+  width: 100%;  /* Make the image box take full width of its container */
+  height: 100px;  /* Fixed height for consistency */
+  object-fit: contain;  /* Makes sure the image stays inside the box without overflow */
+  border-radius: 10px;
+}
+
+.images {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;  /* Ensures the image doesn't stretch or overflow */
+  border-radius: 10px;
+}
+
+.image-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  margin-top: 10px;
+
+  white-space: nowrap; /* Prevent text from wrapping to the next line */
+  overflow: hidden;    /* Hide any overflowing text */
+  text-overflow: ellipsis; /* Show ellipsis when text overflows */
+}
+
+.image-option {
+  color: white;
+  background-color: inherit;
+  border: none;
+  cursor: pointer;
+}
+
+.image-type {
+  font-size: 25px;
+}
+
+.image-name-size {
+  display: flex;
+  flex-direction: column;
+
+  white-space: nowrap; /* Prevent text from wrapping to the next line */
+  overflow: hidden;    /* Hide any overflowing text */
+  text-overflow: ellipsis; /* Show ellipsis when text overflows */
+}
+
+.image-name {
+  white-space: nowrap; /* Prevent text from wrapping to the next line */
+  overflow: hidden;    /* Hide any overflowing text */
+  text-overflow: ellipsis; /* Show ellipsis when text overflows */
+}
+
+.image-size {
+  font-size: 10px;
+}
+
+.image-option {
+  font-size: 20px;
+}
