@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const API_BASE_URL = 'http://localhost:3000'; // Adjust the URL as necessary
+    const API_BASE_URL = 'https://sigmaboy.cloud'; // Adjust the URL as necessary
   
     document.getElementById('signup-form').addEventListener('submit', async (event) => {
       event.preventDefault();
