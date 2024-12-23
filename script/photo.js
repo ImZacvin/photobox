@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:3000';
+const API_BASE_URL = 'https://sigmaboy.cloud';
 
 // Function to fetch photos from the backend
 async function getPhotos() {
