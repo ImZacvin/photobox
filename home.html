@@ -24,6 +24,70 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 
   <script>
+    let currentFolderId = null; // Start at root
+
+    function navigateToFolder(folderId, folderName) {
+      // Render the child folders of the selected folder
+      renderFolderGrid(folderId);
+
+      // Update the breadcrumb path
+      const pathContainer = document.querySelector('#current-path-container .path');
+      const newPathDiv = document.createElement('div');
+      const newPathP = document.createElement('p');
+
+      // Set attributes and content for the new breadcrumb
+      newPathP.id = 'current-path';
+      newPathP.setAttribute('data-folder-id', folderId);
+      newPathP.style.display = 'inline'; // Prevent new line
+      newPathP.style.cursor = 'pointer';
+      newPathP.textContent = ` / ${folderName}`;
+      newPathP.classList.add('breadcrumb'); // Add a class for easier selection
+
+      // Append the new breadcrumb to the path container
+      newPathDiv.style.display = 'inline'; // Prevent new line
+      newPathDiv.appendChild(newPathP);
+      pathContainer.appendChild(newPathDiv);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelector('.js-folders-grid').addEventListener('click', async (event) => {
+        const clickedFolder = event.target.closest('.folder-button');
+        if (clickedFolder) {
+          const folderId = clickedFolder.getAttribute('data-folder-id');
+          const folderName = clickedFolder.querySelector('.folder-title').textContent;
+
+          const pathContainer = document.querySelector('#current-path-container .path');
+          pathContainer.innerHTML += `<p class="breadcrumb" data-folder-id="${folderId}">/${folderName}</p>`;
+
+          await renderContent(folderId);
+          currentFolderId = folderId;
+        }
+      });
+
+      document.querySelector('#current-path-container').addEventListener('click', async (event) => {
+        const clickedBreadcrumb = event.target.closest('p.breadcrumb');
+        if (clickedBreadcrumb) {
+          const folderId = clickedBreadcrumb.getAttribute('data-folder-id');
+
+          const pathContainer = document.querySelector('#current-path-container .path');
+          const allBreadcrumbs = Array.from(pathContainer.querySelectorAll('p.breadcrumb'));
+          const clickedIndex = allBreadcrumbs.indexOf(clickedBreadcrumb);
+
+          allBreadcrumbs.slice(clickedIndex + 1).forEach(breadcrumb => breadcrumb.remove());
+
+          const newFolderId = folderId === "" ? null : folderId;
+          await renderContent(newFolderId);
+          currentFolderId = newFolderId;
+        }
+
+        
+      });
+    });
+
+  </script>
+
+  <script>
+    
     document.addEventListener('DOMContentLoaded', () => {
       const token = localStorage.getItem('authToken'); // Check if a token exists
 
@@ -132,7 +196,12 @@
 
     <div id="current-path-container">
       <p id="current-path">Path: /</p>
-    </div>
+      <div class="path" style="display: inline;">
+        <div style="display: inline;">
+          <p id="current-path" class="breadcrumb" data-folder-id="" style="display: inline;">root</p>
+        </div>
+      </div>
+    </div>    
     
     <!-- Folder Grid -->
     <div class="container-folder js-folders-grid"></div>
@@ -149,14 +218,15 @@
   </div>
 
   
-
+  <script src="script/path.js"></script>
   <script src="script/app.js"></script>
-  <script src="script/folder-modal.js"></script>
+
   <script src="script/folder.js"></script>
   <script src="script/photo.js"></script>
+  
+  <script src="script/folder-modal.js"></script>
   <script src="script/sidebar.js"></script>
-  <script src="script/upload.js"></script>
-  <script src="script/path.js"></script>
+  <script src="script/uploadImage.js"></script>
   <script src="script/image-option.js"></script>
   <script src="script/deleteImage.js"></script>
   <script src="script/rename.Image.js"></script>

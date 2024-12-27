@@ -18,7 +18,7 @@ async function renameImage(photoId, oldName) {
 
     const updatedPhoto = await response.json();
     console.log('Updated photo:', updatedPhoto);  // Log the updated photo details
-    renderImageGrid();
+    renderContent(currentFolderId);
     return updatedPhoto;
   } catch (error) {
     console.error('Error renaming photo:', error);

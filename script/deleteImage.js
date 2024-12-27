@@ -11,7 +11,7 @@ function deleteImage(imageId) {
     .then(response => response.json())
     .then(data => {
       alert('Image deleted successfully');
-      renderImageGrid();  // Re-render the folder grid to reflect changes
+      renderContent(currentFolderId);  // Re-render the folder grid to reflect changes
     })
     .catch(error => console.error('Error deleting folder:', error));
   }

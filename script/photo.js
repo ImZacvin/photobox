@@ -28,25 +28,21 @@ async function getPhotos() {
   }
 }
 
-// Function to process and display photos
-async function renderImageGrid() {
-  const photos = await getPhotos();  // Fetch the photos
+async function renderImageGrid(folderId) {
+  const photos = await getPhotos(); // Fetch photos from the backend
+
+  // Filter photos by folderId
+  const filteredPhotos = photos.filter(photo => photo.folderId === folderId);
 
   // Check if no photos are found
-  if (photos.length === 0) {
+  if (filteredPhotos.length === 0) {
     document.querySelector('.js-images-grid').innerHTML = '<p>No images available.</p>';
     return;
   }
 
-  // Function to format ISO date to a readable format
-  function formatDate(isoDate) {
-    const date = new Date(isoDate);
-    return date.toLocaleString(); // Adjust for your preferred locale
-  }
-
-  // Loop over the fetched photos and create HTML for each one
+  // Generate HTML for photos
   let imagesHTML = '';
-  photos.forEach((photo) => {
+  filteredPhotos.forEach((photo) => {
     imagesHTML += `
       <div class="image-box" data-image-id="${photo.id}">
         <div class="image" onclick="openImageModal('${photo.url}', '${photo.name}', '${photo.createdAt}')">
@@ -84,6 +80,19 @@ async function renderImageGrid() {
   // Insert the generated HTML into the page
   document.querySelector('.js-images-grid').innerHTML = imagesHTML;
 }
+
+async function renderContent(folderId) {
+  // Render folders (using parentId for folders)
+  await renderFolderGrid(folderId); 
+
+  // Render images (using folderId for images)
+  await renderImageGrid(folderId);
+}
+
+// Initialize with the root content
+document.addEventListener('DOMContentLoaded', () => {
+  renderContent(null); // Display root content
+});
 
 // Call the renderImageGrid function when the page loads
 document.addEventListener('DOMContentLoaded', renderImageGrid);

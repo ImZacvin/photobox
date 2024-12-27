@@ -27,52 +27,21 @@ async function getFolders() {
   }
 }
 
-// Function to build hierarchy from flat folder list
-function buildHierarchy(flatFolders) {
-  const folderMap = {}; // Map for quick lookup of folders by ID
-  const hierarchy = []; // Array to hold the root-level folders
-
-  // Initialize the folder map
-  flatFolders.forEach(folder => {
-    folderMap[folder.id] = { ...folder, children: [] };
-  });
-
-  // Build the hierarchy
-  flatFolders.forEach(folder => {
-    if (folder.parentId === null) {
-      // Root-level folder
-      hierarchy.push(folderMap[folder.id]);
-    } else if (folderMap[folder.parentId]) {
-      // Add to the parent's children array
-      folderMap[folder.parentId].children.push(folderMap[folder.id]);
-    }
-  });
-
-  return hierarchy; // Return the root-level folders with nested children
-}
-
-// Main function to fetch and process folders
-async function processFolders() {
-  const flatFolders = await getFolders(); // Fetch the flat folder list
-  const hierarchy = buildHierarchy(flatFolders); // Build the hierarchy
-  console.log('Folder hierarchy:', hierarchy); // Log the hierarchy for debugging
-}
-
-// Call the main function
-processFolders();
-
 // Function to process and display folders
-async function renderFolderGrid() {
-  const folders = await getFolders();  // Fetch the folders
+async function renderFolderGrid(parentId) {
+  const folders = await getFolders(); // Fetch the folders
+
+  // Filter folders by parentId
+  const filteredFolders = folders.filter(folder => folder.parentId === parentId);
 
   // Check if no folders are found
-  if (folders.length === 0) {
+  if (filteredFolders.length === 0) {
     document.querySelector('.js-folders-grid').innerHTML = '<p>No folders available.</p>';
     return;
   }
 
   let foldersHTML = '';
-  folders.forEach((folder) => {
+  filteredFolders.forEach((folder) => {
     const contextMenuId = `contextMenu-${folder.id}`; // Unique context menu ID
     foldersHTML += `
       <div class="folder-button" data-folder-id="${folder.id}">
@@ -98,13 +67,14 @@ async function renderFolderGrid() {
     `;
   });
 
-
-  // Insert the generated HTML into the page
   document.querySelector('.js-folders-grid').innerHTML = foldersHTML;
 }
 
 // Call the renderFolderGrid function when the page loads
-document.addEventListener('DOMContentLoaded', renderFolderGrid);
+// On page load, render the root folder contents
+document.addEventListener('DOMContentLoaded', () => {
+  renderFolderGrid(null); // Load root-level folders
+});
 
 function closeFolderModal() {
   const modal = document.getElementById('folder-form-modal');
@@ -128,7 +98,7 @@ function renameFolder(folderId, oldName) {
   if (newName) {
     // You need to make an API call to rename the folder on the backend
     fetch(`${API_BASE_URL}/folders/${folderId}/rename`, {
-      method: 'PATCH',
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('authToken')}`,

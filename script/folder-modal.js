@@ -10,7 +10,6 @@ function showFolderModal() {
     modal.style.display = 'none';  // Hide the modal
   }
   
-  // Function to create the folder
   async function createFolder() {
     const folderName = document.getElementById('folder-name').value.trim();
   
@@ -26,8 +25,7 @@ function showFolderModal() {
       return;
     }
   
-    // Prepare payload
-    const payload = { name: folderName };
+    const payload = { name: folderName, parentId: currentFolderId };
   
     try {
       const response = await fetch('http://localhost:3000/folders', {
@@ -49,23 +47,14 @@ function showFolderModal() {
       console.log('Folder created successfully:', result);
       alert(`Folder "${result.name}" created successfully!`);
   
-      // Reset the folder name input
       document.getElementById('folder-name').value = '';
-  
-      // Close the modal
       closeFolderModal();
-
-      location.reload();
-  
-      // Optionally, refresh the folder list in the UI
-      // renderFolderList(); // Ensure you have a function for this
-  
+      renderContent(currentFolderId); // Refresh current folder view
     } catch (error) {
       console.error('Error creating folder:', error);
       alert('Failed to create folder. Please try again.');
     }
   }
-  
   
   document.addEventListener('DOMContentLoaded', () => {
     // Listen for click events on elements with the class 'folder-add-btn'
