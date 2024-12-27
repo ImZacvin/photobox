@@ -8,7 +8,7 @@ loginButton.addEventListener("click", async (event) => {
 
   try {
     // Sending 'email' instead of 'username'
-    const response = await fetch('http://localhost:3000/auth/login', {
+    const response = await fetch('https://sigmaboy.cloud/auth/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
