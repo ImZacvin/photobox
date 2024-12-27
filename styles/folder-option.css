@@ -1,5 +1,5 @@
 /* Ensure the context menu is hidden by default */
-.context-menuIm {
+.context-menu {
   display: none;
   position: absolute;
   background-color: hsl(0, 0%, 13%);
@@ -8,17 +8,17 @@
 }
 
 /* Position the menu to the left of the button */
-.context-menuIm.left-positioned {
+.context-menu.left-positioned {
   left: -100px; /* Move the menu to the left of the button */
 }
 
 /* Style for the menu items */
-.context-menuIm .menu-item {
+.context-menu .menu-item {
   padding: 8px;
   cursor: pointer;
 }
 
-.context-menuIm .menu-item:hover {
+.context-menu .menu-item:hover {
   background-color: #f0f0f0;
 }
 
@@ -34,10 +34,10 @@ li {
   cursor: pointer;
 }
 
-.context-menuIm ul li:hover {
+.context-menu ul li:hover {
   background-color: #555;
 }
 
-.context-menuIm ul li:focus {
+.context-menu ul li:focus {
   background-color: #555;
 }

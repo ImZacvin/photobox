@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:3000';
+
 
 // Function to fetch photos from the backend
 async function getPhotos() {
@@ -38,12 +38,18 @@ async function renderImageGrid() {
     return;
   }
 
+  // Function to format ISO date to a readable format
+  function formatDate(isoDate) {
+    const date = new Date(isoDate);
+    return date.toLocaleString(); // Adjust for your preferred locale
+  }
+
   // Loop over the fetched photos and create HTML for each one
   let imagesHTML = '';
   photos.forEach((photo) => {
     imagesHTML += `
       <div class="image-box" data-image-id="${photo.id}">
-        <div class="image">
+        <div class="image" onclick="openImageModal('${photo.url}', '${photo.name}', '${photo.createdAt}')">
           <img class="images" src="${photo.url}" alt="${photo.name}">
         </div>
         <div class="image-info">
@@ -58,23 +64,20 @@ async function renderImageGrid() {
               <p>${(photo.size / 1000000).toFixed(2)} MB</p>
             </div>
           </div>
-          <div class="image-option" onclick="showContextMenu(event)">
+          <div class="image-option" onclick="showContextMenuImage(event, '${photo.id}')">
             <i class="fa-solid fa-ellipsis-vertical"></i>
           </div>
         </div>
       </div>
       
       <!-- Context Menu -->
-      <div class="context-menu" id="contextMenu">
+      <div class="context-menuIm" id="contextMenuIm-${photo.id}">
         <ul>
-          <li onclick="renameImage()">Rename</li>
-          <li onclick="deleteImage()">Delete</li>
-          <li onclick="moveImage()">Move</li>
+          <li onclick="renameImage('${photo.id}', '${photo.name}')">Rename</li>
+          <li onclick="deleteImage('${photo.id}')">Delete</li>
+          <li onclick="downloadImage('${photo.url}', '${photo.name}')">Download</li>
         </ul>
       </div>
-        </div>
-      </div>
-    </div>
     `;
   });
 
@@ -84,3 +87,35 @@ async function renderImageGrid() {
 
 // Call the renderImageGrid function when the page loads
 document.addEventListener('DOMContentLoaded', renderImageGrid);
+
+// Function to open modal
+function openImageModal(url, name, createdAt) {
+  const modal = document.getElementById('image-form-modal');
+  modal.querySelector('.image-modal img').src = url;
+  modal.querySelector('.image-name-modal p').textContent = name;
+  modal.querySelector('.image-created-modal p').textContent = `Created At: ${createdAt}`;
+  modal.querySelector('.download-button').setAttribute('href', url);
+  modal.querySelector('.download-button').setAttribute('download', name);
+  modal.style.display = 'flex';
+}
+
+// Function to close modal
+function closeImageModal() {
+  const modal = document.getElementById('image-form-modal');
+  modal.style.display = 'none';
+}
+
+function downloadImage(fileUrl, fileName) {
+  const a = document.createElement('a');
+  a.href = fileUrl;  // URL to the image file
+  a.download = fileName;  // Set the filename for the download
+  
+  // Set the anchor to trigger the download
+  a.style.display = 'none';  // Hide the element
+  document.body.appendChild(a);  // Append the element to the body
+  
+  a.click();  // Trigger the download
+
+  document.body.removeChild(a);  // Clean up by removing the anchor tag
+}
+

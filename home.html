@@ -14,6 +14,8 @@
   <link rel="stylesheet" type="text/css" href="styles/folder-modal.css">
   <link rel="stylesheet" type="text/css" href="styles/path.css">
   <link rel="stylesheet" type="text/css" href="styles/image-option.css">
+  <link rel="stylesheet" type="text/css" href="styles/folder-option.css">
+  <link rel="stylesheet" type="text/css" href="styles/image-modal.css">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="icon" href="products/dummyImages.jpeg" type="image/x-icon">
@@ -100,17 +102,38 @@
     <!-- Folder Creation Modal (initially hidden) -->
     <div id="folder-form-modal" class="folder-form-modal" style="display: none;">
       <div class="folder-form-content">
-        <span class="close-btn" onclick="closeFolderModal()">&times;</span>
+        <span class="folder-close-btn" onclick="closeFolderModal()">&times;</span>
         <h2>Create a New Folder</h2>
-        <input type="text" id="folder-name" placeholder="Enter folder name" />
+        <div class="textbox-input">
+          <input type="text" id="folder-name" placeholder="Enter folder name" />
+        </div>
         <button id="create-folder-btn">Create Folder</button>
+      </div>
+    </div>
+
+    <!-- Image Modal -->
+    <div id="image-form-modal" class="image-form-modal" style="display: none;">
+      <div class="image-form-modal-content">
+        <span class="image-close-btn" onclick="closeImageModal()">&times;</span>
+        <div class="image-modal">
+          <img src="" alt="Image Preview">
+        </div>
+        <div class="image-info-modal">
+          <div class="image-name-modal">
+            <p></p>
+          </div>
+          <div class="image-created-modal">
+            <p></p>
+          </div>
+          <a href="#" class="download-button btn">Download</a>
+        </div>
       </div>
     </div>
 
     <div id="current-path-container">
       <p id="current-path">Path: /</p>
     </div>
-
+    
     <!-- Folder Grid -->
     <div class="container-folder js-folders-grid"></div>
       <!-- More folders can go here -->
@@ -137,6 +160,8 @@
   <script src="script/image-option.js"></script>
   <script src="script/deleteImage.js"></script>
   <script src="script/rename.Image.js"></script>
+  <script src="script/downloadFile.js"></script>
+  <script src="script/folder-option.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 

@@ -1,17 +1,17 @@
-function showContextMenuImage(event, imageId) {
+function showContextMenuFolder(event, folderId) {
   event.stopPropagation(); // Prevent the click event from bubbling up
 
   // Find the corresponding context menu for this folder
-  const contextMenu = document.querySelector(`#contextMenuIm-${imageId}`);
+  const contextMenu = document.querySelector(`#contextMenu-${folderId}`);
 
   if (!contextMenu) {
-    console.error('Context menu not found for folder:', imageId);
+    console.error('Context menu not found for folder:', folderId);
     return;
   }
 
   // Toggle visibility of the context menu
   const isVisible = contextMenu.style.display === 'block';
-  document.querySelectorAll('.context-menuIm').forEach((menu) => {
+  document.querySelectorAll('.context-menu').forEach((menu) => {
     menu.style.display = 'none'; // Hide all other menus
   });
 
@@ -25,7 +25,7 @@ function showContextMenuImage(event, imageId) {
 
 // Hide all context menus when clicking outside
 document.addEventListener('click', function () {
-  document.querySelectorAll('.context-menuIm').forEach((menu) => {
+  document.querySelectorAll('.context-menu').forEach((menu) => {
     menu.style.display = 'none';
   });
 });

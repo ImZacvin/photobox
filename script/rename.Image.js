@@ -1,39 +1,27 @@
-async function renameImage() {
-    const contextMenu = document.getElementById('contextMenu');
-    const imageId = contextMenu.dataset.imageId; // Retrieve the image ID from the context menu
-  
-    if (!imageId) {
-      console.error('No image ID found for renaming!');
-      return;
+async function renameImage(photoId, oldName) {
+  const token = localStorage.getItem('authToken');  // Get the token from localStorage
+  const newName = prompt('Enter new folder name:', oldName);
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/photos/${photoId}/rename`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,  // Include the auth token
+      },
+      body: JSON.stringify({ newName }),  // Send the new name in the request body
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to rename photo');
     }
-  
-    // Prompt the user for a new name
-    const newName = prompt('Enter a new name for the image:');
-  
-    if (!newName) {
-      console.error('No new name provided!');
-      return;
-    }
-  
-    try {
-      const token = localStorage.getItem('authToken');
-      const response = await fetch(`${API_BASE_URL}/photos/${imageId}`, {
-        method: 'PUT', // or PUT depending on your backend implementation
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify({ name: newName }), // Send the new name
-      });
-  
-      if (!response.ok) {
-        throw new Error('Failed to rename image');
-      }
-  
-      console.log('Image renamed successfully:', newName);
-      renderImageGrid(); // Refresh the grid to reflect the new name
-    } catch (error) {
-      console.error('Error renaming image:', error);
-    }
+
+    const updatedPhoto = await response.json();
+    console.log('Updated photo:', updatedPhoto);  // Log the updated photo details
+    renderImageGrid();
+    return updatedPhoto;
+  } catch (error) {
+    console.error('Error renaming photo:', error);
+    return null;
   }
-  
+}
