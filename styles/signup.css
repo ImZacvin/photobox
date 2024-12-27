@@ -6,6 +6,7 @@ body {
     height: 100vh;
     background-color: hsl(0, 0%, 13%);
     padding: 0 5px;
+    color: white;
   }
   
   .form-container {
